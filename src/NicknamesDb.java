@@ -26,6 +26,6 @@ public class NicknamesDb {
     public boolean nameEquals(String name1, String name2){
         if (!nicks.containsKey(name1) || !nicks.containsKey(name2))
             return false;
-        return nicks.get(name1) == nicks.get(name2);
+        return nicks.get(name1).equals(nicks.get(name2));
     }
 }

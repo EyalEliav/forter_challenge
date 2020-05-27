@@ -7,9 +7,9 @@ public class LastNamesDb {
         names = new HashSet<String>();
         try {
             Scanner scr = new Scanner(new BufferedReader(new FileReader(location)));
-            while (scr.hasNext()){
-                names.add(scr.next());
-            }
+            while (scr.hasNext())
+                //in the db, the last name appears first in the line (along with other data)
+                names.add(scr.next().split(",")[0]);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
