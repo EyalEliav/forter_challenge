@@ -2,8 +2,8 @@ import java.util.Arrays;
 
 public class Question {
     public static int countUniqueNames(String billFirstName, String billLastName, String shipFirstName, String shipLastName, String billNameOnCard) {
-        LastNamesDb lastDB = new LastNamesDb("src/db/lastnames.csv");
         NicknamesDb nickDB = new NicknamesDb("src/db/names.csv");
+        LastNamesDb lastDB = new LastNamesDb("src/db/lastnames.csv");
         billFirstName = billFirstName.toLowerCase();
         billLastName = billLastName.toLowerCase();
         shipFirstName = shipFirstName.toLowerCase();
@@ -19,9 +19,10 @@ public class Question {
                 f = false;
             if (billFirstName.split("\\s+").length > 1 && shipFirstName.split("\\s+").length > 1) {
                 //assuming that if a middle names (or a part of them) was given, so they will be equals (according to the shorter middle name)
-                for (int i = 1; i < Math.min(billFirstName.split("\\s+").length, shipFirstName.split("\\s+").length); i++)
+                for (int i = 1; i < Math.min(billFirstName.split("\\s+").length, shipFirstName.split("\\s+").length); i++) {
                     if (!nickDB.nameEquals(billFirstName.split("\\s+")[i], shipFirstName.split("\\s+")[i]))
                         f = false;
+                }
             }
         } else {
             f = false;
@@ -35,13 +36,14 @@ public class Question {
         String[] cardName = billNameOnCard.split("\\s+");
         int minLength = Math.min(cardName.length - shipLastName.split("\\s+").length, shipFirstName.split("\\s+").length);
         //checking if the lastname appears on the beginning of the full name
-        if (lastDB.nameEquals(String.join(" ", Arrays.copyOfRange(cardName, 0, shipLastName.split("\\s+").length)), shipLastName))
+        if (lastDB.nameEquals(String.join(" ", Arrays.copyOfRange(cardName, 0, shipLastName.split("\\s+").length)), shipLastName)) {
             for (int i = shipLastName.split("\\s+").length; i < minLength; i++) {
                 if (!nickDB.nameEquals(cardName[i], shipFirstName.split("\\s+")[i - shipLastName.split("\\s+").length])) {
                     flag1 = false;
                     break;
                 }
             }
+        }
             //checking if the lastname appears at the end of the full name
         else if (lastDB.nameEquals(String.join(" ", Arrays.copyOfRange(cardName, cardName.length - shipLastName.split("\\s+").length, cardName.length)), shipLastName)) {
             for (int i = 0; i < minLength; i++)
