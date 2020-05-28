@@ -1,7 +1,8 @@
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class LastNamesDb {
+public class LastNamesDb implements DataBase{
     private HashSet<String> names;
     public LastNamesDb(String location){
         names = new HashSet<String>();
@@ -9,12 +10,19 @@ public class LastNamesDb {
             Scanner scr = new Scanner(new BufferedReader(new FileReader(location)));
             while (scr.hasNext())
                 //in the db, the last name appears first in the line (along with other data)
-                names.add(scr.next().split(",")[0]);
+                names.add(scr.next().split(",")[0].toLowerCase());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    public boolean exists(String s){
+    public boolean contains(String s){
         return names.contains(s);
+    }
+    public HashSet<String> possibleNames(String name){
+        HashSet<String> posNames = new HashSet<String>();
+        for (String s : Distance.levinshteinIsOne(name))
+            if (this.contains(s))
+                posNames.add(s);
+        return posNames;
     }
 }
