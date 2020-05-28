@@ -26,6 +26,7 @@ public class Question {
         } else {
             f = false;
         }
+        //found a couple of names that are equal
         if (f)
             sameNamesCouples++;
         //comparing the ship name to the on-card name
@@ -51,6 +52,7 @@ public class Question {
         } else {
             flag1 = false;
         }
+        //found a couple of names that are equal
         if (flag1)
             sameNamesCouples++;
         //checking if the bill name and the on card name are equal
@@ -74,6 +76,7 @@ public class Question {
         } else {
             flag2 = false;
         }
+        //found a couple of names that are equal
         if (flag2)
             sameNamesCouples++;
         switch (sameNamesCouples) {
