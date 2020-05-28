@@ -11,8 +11,12 @@ public class NicknamesDb implements DataBase {
             while (scr.hasNext()){
                 HashSet<String> commonNicks = new HashSet<String>();
                 Collections.addAll(commonNicks, scr.next().split(","));
-                for (String s : commonNicks)
-                    nicks.put(s.toLowerCase(), commonNicks);
+                for (String s : commonNicks){
+                    if (nicks.containsKey(s))
+                        nicks.get(s).addAll(commonNicks);
+                    else
+                        nicks.put(s, commonNicks);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -22,12 +26,15 @@ public class NicknamesDb implements DataBase {
         return nicks.containsKey(name);
     }
     public boolean nameEquals(String name1, String name2){
+        if (name1.equals(name2))
+            return true;
         //checking if the names are on the db
         if (this.contains(name1) && this.contains(name2)) {
             //if the names are on the db, they should be the same or nicknames of each other (otherwise they are not equal)
-            if (name1.equals(name2) || nicks.get(name1).contains(name1))
+            if (nicks.get(name1).contains(name2))
                 return true;
-            return false;
+            else
+                return false;
         }
         //checking if the names are typos of each other
         HashSet<String> common = possibleNames(name1);
