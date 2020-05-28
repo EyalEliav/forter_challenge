@@ -22,6 +22,7 @@ public class LastNamesDb implements DataBase{
         HashSet<String> posNames = new HashSet<String>();
         for (String s : Distance.levinshteinIsOne(name))
             if (this.contains(s))
+                //adding all the possible names
                 posNames.add(s);
         return posNames;
     }

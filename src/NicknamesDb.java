@@ -3,18 +3,16 @@ import java.util.*;
 
 public class NicknamesDb implements DataBase {
     //Map between string - the nickname, to Id - number of line, nicknames of the same name has same id
-    private HashMap<String, Integer> nicks;
+    private HashMap<String, HashSet<String>> nicks;
     public NicknamesDb(String location){
-        nicks = new HashMap<String, Integer>();
+        nicks = new HashMap<String, HashSet<String>>();
         try {
             Scanner scr = new Scanner(new BufferedReader(new FileReader(location)));
-            int i = 0;
-            String[] lineNicks;
             while (scr.hasNext()){
-                lineNicks = scr.next().split(",");
-                for (String s : lineNicks)
-                    nicks.put(s.toLowerCase(), i);
-                i++;
+                HashSet<String> commonNicks = new HashSet<String>();
+                Collections.addAll(commonNicks, scr.next().split(","));
+                for (String s : commonNicks)
+                    nicks.put(s.toLowerCase(), commonNicks);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -31,8 +29,11 @@ public class NicknamesDb implements DataBase {
     public HashSet<String> possibleNames(String name){
         HashSet<String> posNames = new HashSet<String>();
         for (String s : Distance.levinshteinIsOne(name))
-            if (this.contains(s))
-                posNames.add(s);
+            if (this.contains(s)) {
+                //adding all the possible names and nicknames
+                for (String str : nicks.get(s))
+                    posNames.add(str);
+            }
         return posNames;
     }
 }
