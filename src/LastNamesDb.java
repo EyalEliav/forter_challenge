@@ -18,6 +18,18 @@ public class LastNamesDb implements DataBase{
     public boolean contains(String s){
         return names.contains(s);
     }
+    public boolean nameEquals(String name1, String name2){
+        //checking if the names are the same or nicknames of the same name
+        if (name1.equals(name2))
+            return true;
+        //if the db contains both of the names and they are not equal, they are not the same name
+        if (this.contains(name1) && this.contains(name2))
+            return false;
+        //checking if the names are typos of each other
+        HashSet<String> common = possibleNames(name1);
+        common.retainAll(possibleNames(name2));
+        return common.size() > 0;
+    }
     public HashSet<String> possibleNames(String name){
         HashSet<String> posNames = new HashSet<String>();
         for (String s : Distance.levinshteinIsOne(name))

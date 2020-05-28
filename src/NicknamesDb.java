@@ -22,9 +22,16 @@ public class NicknamesDb implements DataBase {
         return nicks.containsKey(name);
     }
     public boolean nameEquals(String name1, String name2){
-        if (!nicks.containsKey(name1) || !nicks.containsKey(name2))
+        //checking if the names are the same or nicknames of the same name
+        if (name1.equals(name2) || nicks.get(name1).contains(name2))
+            return true;
+        //if the db contains both of the names and they are not nicknames of each other (with checked earlier), they are not equal
+        if (this.contains(name1) && this.contains(name2))
             return false;
-        return nicks.get(name1).equals(nicks.get(name2));
+        //checking if the names are typos of each other
+        HashSet<String> common = possibleNames(name1);
+        common.retainAll(possibleNames(name2));
+        return common.size() > 0;
     }
     public HashSet<String> possibleNames(String name){
         HashSet<String> posNames = new HashSet<String>();
