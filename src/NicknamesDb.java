@@ -22,12 +22,13 @@ public class NicknamesDb implements DataBase {
         return nicks.containsKey(name);
     }
     public boolean nameEquals(String name1, String name2){
-        //checking if the names are the same or nicknames of the same name
-        if (name1.equals(name2) || nicks.get(name1).contains(name2))
-            return true;
-        //if the db contains both of the names and they are not nicknames of each other (with checked earlier), they are not equal
-        if (this.contains(name1) && this.contains(name2))
+        //checking if the names are on the db
+        if (this.contains(name1) && this.contains(name2)) {
+            //if the names are on the db, they should be the same or nicknames of each other (otherwise they are not equal)
+            if (name1.equals(name2) || nicks.get(name1).contains(name1))
+                return true;
             return false;
+        }
         //checking if the names are typos of each other
         HashSet<String> common = possibleNames(name1);
         common.retainAll(possibleNames(name2));
